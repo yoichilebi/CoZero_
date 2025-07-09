@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CoZero Homepage</title>
+    <!-- Google Fonts - Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Link to external CSS file - Path adjusted based on your folder structure -->
+    <link rel="stylesheet" href="css/home.css">
+</head>
+
+<!-- Firebase SDKs -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+  import { signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+  import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+  
+  const firebaseConfig = {
+    apiKey: "AIzaSyA2ydl9-68gA-_3UXpxEJY6CfvTmCMPsLo",
+    authDomain: "cozero-tracker.firebaseapp.com",
+    projectId: "cozero-tracker",
+    storageBucket: "cozero-tracker.firebasestorage.app",
+    messagingSenderId: "178790925784",
+    appId: "1:178790925784:web:f3b6d1a9e1eeadee5adead",
+    measurementId: "G-PQEWJ0RVCW"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+
+  const profileUsername = document.getElementById("profileUsername");
+
+  onAuthStateChanged(auth, async (user) => {
+    if (user) {
+      console.log("✅ User is signed in:", user.email);
+
+      const docRef = doc(db, "users", user.uid);
+      const docSnap = await getDoc(docRef);
+
+      if (docSnap.exists()) {
+        const data = docSnap.data();
+        console.log("✅ User data from Firestore:", data);
+        profileUsername.textContent = data.username || "User";
+      } else {
+        console.warn("⚠️ No Firestore doc found for this user.");
+        profileUsername.textContent = "Unknown";
+      }
+    } else {
+      console.warn("⚠️ No user is signed in.");
+      window.location.href = "login.html";
+    }
+
+    const logoutButton = document.getElementById("logoutButton");
+
+logoutButton.addEventListener("click", (e) => {
+  e.preventDefault(); // Prevent default link behavior
+  signOut(auth)
+    .then(() => {
+      console.log("✅ User signed out successfully.");
+      window.location.href = "index.html"; // Redirect to login after logout
+    })
+    .catch((error) => {
+      console.error("❌ Error signing out:", error);
+    });
+    });
+  });
+</script>
+
+<body class="body-layout">
+ 
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <!-- Left Section: Menu, Logo, CoZero Text -->
+        <div class="navbar-left-section">
+            <!-- Menu Icon -->
+            <button id="menuButton" class="menu-button">
+                <svg class="icon-svg" viewBox="0 0 24 24">
+                    <line x1="3" y1="12" x2="21" y2="12"></line>
+                    <line x1="3" y1="6" x2="21" y2="6"></line>
+                    <line x1="3" y1="18" x2="21" y2="18"></line>
+                </svg>
+            </button>
+            <!-- Logo (Reverted to SVG) -->
+            <div class="logo-placeholder">
+                <svg class="icon-svg" viewBox="0 0 24 24">
+                    <!-- Circle representing 'Zero' or Earth -->
+                    <circle cx="12" cy="12" r="10" stroke="white" stroke-width="2"/>
+                    <!-- A simple, stylized leaf (white fill, as it will be on a green background) -->
+                    <path d="M12 4C10 4 8 6 8 8C8 10 12 14 12 14C12 14 16 10 16 8C16 6 14 4 12 4Z" fill="white"/>
+                </svg>
+            </div>
+            <!-- CoZero Text - Now clickable to home.html -->
+            <a href="home.html" class="cozero-text-link"><span class="cozero-text">CoZero</span></a>
+        </div>
+ 
+        <!-- Right Section: Icons and User Profile -->
+        <div class="navbar-right-section">
+            <!-- Notification Icon -->
+            <button class="notification-button">
+                <svg class="icon-svg" viewBox="0 0 24 24">
+                    <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                    <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                </svg>
+            </button>
+            <!-- User Profile (Clickable) -->
+            <button id="profileDropdownButton" class="profile-button">
+                <svg class="icon-svg" viewBox="0 0 24 24">
+                    <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+                <span class="profile-name" id="profileUsername">Loading...</span>
+                <!-- Dropdown Arrow -->
+                <svg class="icon-svg dropdown-arrow" viewBox="0 0 24 24">
+                    <path d="M6 9l6 6 6-6"></path>
+                </svg>
+            </button>
+ 
+            <!-- Profile Dropdown Menu -->
+            <div id="profileDropdown" class="profile-dropdown">
+                <a href="#" class="dropdown-item">Your Profile</a>
+                <a href="settings.html" class="dropdown-item">Settings</a> <!-- This link directs to settings.html -->
+                <a href="#" id="logoutButton" class="dropdown-item">Log out</a>
+            </div>
+        </div>
+        <!-- Horizontal line at the bottom of the header -->
+        <div class="nav-header-line"></div>
+    </nav>
+ 
+    <!-- Sliding Sidebar Menu -->
+    <aside id="sidebar" class="sidebar">
+        <nav class="sidebar-nav">
+            <a href="home.html" class="sidebar-link">
+                <svg class="icon-svg" viewBox="0 0 24 24">
+                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                    <line x1="3" y1="9" x2="21" y2="9"></line>
+                    <line x1="9" y1="21" x2="9" y2="9"></line>
+                </svg>
+                <span>Dashboard</span>
+            </a>
+            <a href="#" class="sidebar-link">
+                <svg class="icon-svg" viewBox="0 0 24 24">
+                    <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
+                </svg>
+                <span>Activity</span>
+            </a>
+            <a href="#" class="sidebar-link">
+                <svg class="icon-svg" viewBox="0 0 24 24">
+                    <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+                    <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+                </svg>
+                <span>Insight</span>
+            </a>
+            <!-- Settings link removed from sidebar as requested -->
+            <a href="about.html" class="sidebar-link">
+                <svg class="icon-svg" viewBox="0 0 24 24">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="16" x2="12" y2="12"></line>
+                    <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                </svg>
+                <span>About</span>
+            </a>
+        </nav>
+    </aside>
+ 
+    <!-- Main Content Area -->
+    <main class="main-content-area">
+        <!-- "Home" Title (top-left, as per image) -->
+        <div class="home-title-container">
+            <h1 id="homeTitle" class="home-title">Home</h1>
+        </div>
+ 
+        <!-- Welcome Message Section (bottom-left, as per image) -->
+        <div class="welcome-message-container">
+            <h2 class="welcome-heading">Welcome to CoZero</h2>
+            <p class="welcome-subheading-1">TRACK YOUR DAILY CARBON IMPACT</p>
+            <p class="welcome-subheading-2">One Log at a Time. One Planet to Save.</p>
+        </div>
+    </main>
+ 
+    <!-- Footer -->
+    <footer class="footer">
+        &copy; 2025 CoZero
+    </footer>
+ 
+    <script>
+        // JavaScript for sidebar and profile dropdown (re-used from home.html)
+        const menuButton = document.getElementById('menuButton');
+        const body = document.body;
+        const sidebar = document.getElementById('sidebar');
+ 
+        menuButton.addEventListener('mouseenter', () => {
+            body.classList.add('menu-hovered');
+        });
+        menuButton.addEventListener('mouseleave', () => {
+            body.classList.remove('menu-hovered');
+        });
+        sidebar.addEventListener('mouseenter', () => {
+            body.classList.add('menu-hovered');
+        });
+        sidebar.addEventListener('mouseleave', () => {
+            body.classList.remove('menu-hovered');
+        });
+ 
+        const profileDropdownButton = document.getElementById('profileDropdownButton');
+        const profileDropdown = document.getElementById('profileDropdown');
+ 
+        profileDropdownButton.addEventListener('click', (event) => {
+            event.stopPropagation();
+            profileDropdown.classList.toggle('show');
+        });
+ 
+        document.addEventListener('click', (event) => {
+            if (!profileDropdownButton.contains(event.target) && !profileDropdown.contains(event.target)) {
+                profileDropdown.classList.remove('show');
+            }
+        });
+    </script>
+ 
+</body>
+</html>
+ 

@@ -1,0 +1,248 @@
+/*
+ * about.css
+ * This file contains the specific styles for the "About Us" page,
+ * inheriting and adapting from the main styles.css and light-dark-mode.css.
+ */
+ 
+/* Define CSS variables for consistent theming across all pages */
+/* These variables should ideally be defined in styles.css or a dedicated variables.css */
+/* For now, replicating some key ones here for clarity, but linking styles.css first is best */
+:root {
+    /* Dark Mode Defaults (from styles.css) */
+    --main-bg-color: #1a1a2e;
+    --text-color-primary: #e0e0e0;
+    --accent-color: #00e6e6; /* Vibrant electric cyan */
+    --accent-shadow: rgba(0, 230, 230, 0.3);
+    --hero-title-color: #00e6e6;
+    --hero-title-shadow: rgba(0, 230, 230, 0.5);
+    --heading-color: #00e6e6;
+    --text-color-secondary: #b0b0b0; /* Slightly desaturated text for feature cards */
+    --border-color-subtle: rgba(255, 255, 255, 0.08); /* Subtle border for glassmorphism */
+    --card-bg-dark: rgba(255, 255, 255, 0.03);
+    --card-shadow-dark: rgba(0, 0, 0, 0.3);
+ 
+    /* Light Mode Overrides (from light-dark-mode.css) */
+    /* These will be applied when body.light-mode is active */
+    --light-main-bg-color: #f0f2f5;
+    --light-text-color-primary: #333333;
+    --light-accent-color: #ff6b6b; /* Vibrant coral */
+    --light-accent-shadow: rgba(255, 107, 107, 0.3);
+    --light-hero-title-color: #ff6b6b;
+    --light-hero-title-shadow: rgba(255, 107, 107, 0.5);
+    --light-heading-color: #ff6b6b;
+    --light-text-color-secondary: #555555;
+    --light-border-color-subtle: rgba(0, 0, 0, 0.1);
+    --light-card-bg-light: rgba(255, 255, 255, 0.6);
+    --light-card-shadow-light: rgba(0, 0, 0, 0.15);
+}
+ 
+/* Apply light mode variables */
+body.light-mode {
+    --main-bg-color: var(--light-main-bg-color);
+    --text-color-primary: var(--light-text-color-primary);
+    --accent-color: var(--light-accent-color);
+    --accent-shadow: var(--light-accent-shadow);
+    --hero-title-color: var(--light-hero-title-color);
+    --hero-title-shadow: var(--light-hero-title-shadow);
+    --heading-color: var(--light-heading-color);
+    --text-color-secondary: var(--light-text-color-secondary);
+    --border-color-subtle: var(--light-border-color-subtle);
+    --card-bg-dark: var(--light-card-bg-light); /* Use light card background in light mode */
+    --card-shadow-dark: var(--light-card-shadow-light); /* Use light card shadow in light mode */
+}
+ 
+ 
+/* Main container for the About page content */
+.about-page-content {
+    display: flex;
+    flex-direction: column;
+    gap: 30px; /* Space between the new section boxes */
+    margin-top: 40px; /* Space from header */
+    margin-bottom: 40px; /* Space from footer */
+}
+ 
+/* Style for each individual section box */
+.about-section-box {
+    padding: 40px; /* Padding inside each box */
+    background: var(--card-bg-dark); /* Use variable for card background */
+    backdrop-filter: blur(8px);
+    border: 1px solid var(--border-color-subtle); /* Use variable for subtle border */
+    border-radius: 18px; /* Rounded corners for the boxes */
+    box-shadow: 0 6px 20px var(--card-shadow-dark); /* Shadow for depth */
+    color: var(--text-color-primary); /* Ensure text color is primary */
+    transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+ 
+/* Specific styling for the intro box if needed, though default will apply */
+.intro-box h1 {
+    font-size: 2.8rem;
+    color: var(--hero-title-color); /* Use the hero title color variable */
+    text-shadow: 0 0 10px var(--hero-title-shadow);
+    margin-bottom: 1em;
+    text-align: center; /* Center the main title */
+}
+ 
+.about-section-box h2 {
+    font-size: 2.2rem;
+    color: var(--heading-color); /* Use a general heading color variable */
+    border-bottom: 2px solid var(--border-color-subtle); /* Use a subtle border color variable */
+    padding-bottom: 8px;
+    margin-top: 0; /* Remove top margin as boxes provide separation */
+    margin-bottom: 1em;
+}
+ 
+/* Paragraphs within the about container */
+.about-section-box p {
+    font-size: 1.05rem;
+    color: var(--text-color-secondary); /* Use a secondary text color variable */
+    margin-bottom: 1em;
+}
+ 
+/* List items */
+.about-section-box ul {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 1.5em;
+}
+ 
+.about-section-box ul li {
+    margin-bottom: 0.8em;
+    padding-left: 1.8em;
+    position: relative;
+    font-size: 1.05em;
+    color: var(--text-color-secondary);
+}
+ 
+.about-section-box ul li:before {
+    content: '•';
+    color: var(--accent-color); /* Use the main accent color */
+    font-weight: bold;
+    display: inline-block;
+    width: 1em;
+    margin-left: -1.8em;
+    position: absolute;
+}
+ 
+/* SDG Info Box - styled like a feature card but with a distinct accent */
+.sdg-info {
+    background: rgba(0, 230, 230, 0.05); /* Default to cyan for dark mode */
+    border-left: 5px solid var(--accent-color); /* Use accent color for border */
+    padding: 18px 25px;
+    margin-top: 2em;
+    border-radius: 8px;
+    font-size: 0.95em;
+    color: var(--text-color-secondary);
+    box-shadow: 0 4px 15px var(--accent-shadow); /* Use accent shadow */
+    transition: all 0.3s ease;
+}
+ 
+/* Team Grid - similar to grid-columns */
+.team-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+    margin-top: 20px;
+    margin-bottom: 2em;
+}
+ 
+/* Team Member Card - styled like a feature card */
+.team-member {
+    background: var(--card-bg-dark); /* Use variable for card background */
+    backdrop-filter: blur(8px);
+    border: 1px solid var(--border-color-subtle); /* Use variable for subtle border */
+    border-radius: 18px;
+    padding: 35px;
+    box-shadow: 0 6px 20px var(--card-shadow-dark); /* Use variable for card shadow */
+    transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+ 
+    /* New Flexbox styles for image and text alignment */
+    display: flex;
+    align-items: center; /* Vertically align image and text */
+    text-align: left; /* Align text content to the left within the flex container */
+    gap: 20px; /* Space between the image and the text */
+}
+ 
+.team-member:hover {
+    transform: translateY(-8px);
+    border-color: var(--accent-color); /* Accent color on hover */
+    box-shadow: 0 10px 30px var(--accent-shadow); /* Accent shadow on hover */
+}
+ 
+/* Style for the team member image */
+.team-member img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 50%; /* Makes the image circular */
+    flex-shrink: 0; /* Prevents the image from shrinking */
+    margin-bottom: 0; /* Override any previous margin */
+}
+ 
+/* Container for team member text to manage its layout */
+.team-member-info {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1; /* Allows the text content to take up available space */
+}
+ 
+.team-member h4 {
+    color: var(--accent-color); /* Accent color for name */
+    margin-bottom: 5px; /* Space below name */
+    font-size: 1.3em;
+    font-weight: 600;
+    margin-top: 0; /* Remove default top margin */
+}
+ 
+.team-member p {
+    color: var(--text-color-secondary); /* Secondary text color for roles */
+    font-size: 0.95em;
+    margin-bottom: 0; /* Remove default bottom margin */
+}
+ 
+/* Section divider - now used only for the intro box if desired, or can be removed */
+.section-divider {
+    border: 0;
+    height: 1px;
+    background-image: linear-gradient(to right, rgba(0, 0, 0, 0), var(--border-color-subtle), rgba(0, 0, 0, 0));
+    margin: 3em 0;
+}
+ 
+/* Ensure main content takes available space for sticky footer */
+.content-wrapper {
+    flex-grow: 1;
+    display: flex; /* Use flex to center the about-container if needed */
+    justify-content: center;
+    align-items: flex-start; /* Align to top, not center, to allow scrolling */
+    padding: 20px 0; /* Add padding for overall content */
+    width: 100%;
+}
+ 
+/* Responsive adjustments for about page */
+@media (max-width: 768px) {
+    .about-section-box {
+        padding: 25px;
+    }
+ 
+    .intro-box h1 {
+        font-size: 2.2rem;
+    }
+ 
+    .about-section-box h2 {
+        font-size: 1.8rem;
+    }
+ 
+    /* Adjust team member layout for smaller screens */
+    .team-member {
+        flex-direction: column; /* Stack image and text vertically */
+        text-align: center; /* Center text when stacked */
+        gap: 10px; /* Reduce gap when stacked */
+    }
+ 
+    .team-member img {
+        margin-bottom: 10px; /* Add margin below image when stacked */
+    }
+ 
+    .team-grid {
+        grid-template-columns: 1fr;
+    }
+}
